@@ -1,9 +1,6 @@
 package com.jazztech.apicadastro.applicationservice.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Adress {
@@ -17,6 +14,7 @@ public class Adress {
     private String cep;
     private String cidade;
     private String estado;
+    private Long fkClient;
 
     public Adress(String logradouro, String bairro, String complemento, String cep, String cidade, String estado) {
         this.logradouro = logradouro;

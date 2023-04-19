@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.validation.constraints.PastOrPresent;
+import org.hibernate.validator.constraints.br.CPF;
 
 
 import java.time.LocalDate;
@@ -17,12 +19,17 @@ public class Clients  {
     private long id;
 
     private String nome;
+
+    @CPF
     private String cpf;
+
+    @PastOrPresent
     private LocalDate dateOfBirthday;
     private String cep;
     private Integer numberOfResidence;
     private String complement;
 
+    public Clients(){}
     public Clients(String nome, String cpf, LocalDate dateOfBirthday, String cep, Integer numberOfResidence, String complement) {
         this.nome = nome;
         this.cpf = cpf;
@@ -34,11 +41,11 @@ public class Clients  {
         }else {this.complement = complement;}
     }
 
-    public Adress criarEndereco(){
-        Cep cep1 = ViaCepClient.findCep(cep);
-        return new Adress(cep1.getLogradouro(), cep1.getBairro(),
-                complement, cep1.getCep(), cep1.getLocalidade(), cep1.getUf());
-    }
+//    public Adress criarEndereco(){
+//        Cep cep1 = ViaCepClient.findCep(cep);
+//        return new Adress(cep1.getLogradouro(), cep1.getBairro(),
+//                complement, cep1.getCep(), cep1.getLocalidade(), cep1.getUf());
+//    }
 
     public String getNome() {
         return nome;
@@ -51,6 +58,11 @@ public class Clients  {
     public LocalDate getDateOfBirthday() {
         return dateOfBirthday;
     }
+
+    public String getCep() {
+        return cep;
+    }
+
 
     public Integer getNumberOfResidence() {
         return numberOfResidence;
