@@ -1,28 +1,34 @@
 package com.jazztech.apicadastro.applicationservice.domain.entity;
 
+import com.gtbr.domain.Cep;
 import jakarta.persistence.*;
+import lombok.experimental.NonFinal;
 
 @Entity
-public class Adress {
+@Table(name = "adress")
+public class Adress{
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        @NonFinal
+        private Integer idAdress;
+        private String logradouro;
+        private String bairro;
+        private String complemento;
+        private String cep;
+        private String cidade;
+        private String estado;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idAdress;
-    private String logradouro;
-    private String bairro;
-    private String complemento;
-    private String cep;
-    private String cidade;
-    private String estado;
-    private Long fkClient;
+        @Transient
+        private Clients clients;
 
-    public Adress(String logradouro, String bairro, String complemento, String cep, String cidade, String estado) {
-        this.logradouro = logradouro;
-        this.bairro = bairro;
-        this.complemento = complemento;
-        this.cep = cep;
-        this.cidade = cidade;
-        this.estado = estado;
+        public Adress(){}
+    public Adress(Cep cep, Clients clients) {
+        this.bairro = cep.getBairro();
+        this.cep = cep.getCep();
+        this.cidade = cep.getLocalidade();
+        this.estado = cep.getUf();
+        this.complemento = clients.getComplement();
+        this.logradouro = cep.getLogradouro();
     }
 
     @Override

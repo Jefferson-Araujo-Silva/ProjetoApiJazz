@@ -2,10 +2,9 @@ package com.jazztech.apicadastro.applicationservice.domain.entity;
 
 import com.gtbr.ViaCepClient;
 import com.gtbr.domain.Cep;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -13,23 +12,32 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "client")
 public class Clients  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long idClient;
 
+    @NotBlank @NotNull
     private String nome;
 
-    @CPF
+    @CPF @NotNull
     private String cpf;
 
-    @PastOrPresent
+    @PastOrPresent @NotNull
     private LocalDate dateOfBirthday;
+    @Transient @NotNull
     private String cep;
+    @Transient @NotNull
     private Integer numberOfResidence;
+    @Transient
     private String complement;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "adress_id", referencedColumnName = "idAdress")
+    private Adress adress;
 
     public Clients(){}
+
     public Clients(String nome, String cpf, LocalDate dateOfBirthday, String cep, Integer numberOfResidence, String complement) {
         this.nome = nome;
         this.cpf = cpf;
@@ -41,14 +49,29 @@ public class Clients  {
         }else {this.complement = complement;}
     }
 
-//    public Adress criarEndereco(){
-//        Cep cep1 = ViaCepClient.findCep(cep);
-//        return new Adress(cep1.getLogradouro(), cep1.getBairro(),
-//                complement, cep1.getCep(), cep1.getLocalidade(), cep1.getUf());
-//    }
-
     public String getNome() {
         return nome;
+    }
+
+    public void setAdress(Adress adress) {
+        this.adress = adress;
+    }
+
+    public long getId() {
+        return idClient;
+    }
+    @Transient
+    public String getCep() {
+        return cep;
+    }
+
+    @Transient
+    public Integer getNumberOfResidence() {
+        return numberOfResidence;
+    }
+    @Transient
+    public String getComplement() {
+        return complement;
     }
 
     public String getCpf() {
@@ -57,19 +80,6 @@ public class Clients  {
 
     public LocalDate getDateOfBirthday() {
         return dateOfBirthday;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-
-    public Integer getNumberOfResidence() {
-        return numberOfResidence;
-    }
-
-    public String getComplement() {
-        return complement;
     }
 
     @Override
