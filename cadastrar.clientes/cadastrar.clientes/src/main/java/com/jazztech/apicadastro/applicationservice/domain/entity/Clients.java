@@ -1,7 +1,5 @@
 package com.jazztech.apicadastro.applicationservice.domain.entity;
 
-import com.gtbr.ViaCepClient;
-import com.gtbr.domain.Cep;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,21 +13,21 @@ import java.time.LocalDate;
 @Table(name = "client")
 public class Clients  {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long idClient;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idClient;
 
     @NotBlank @NotNull
-    private String nome;
+    private String name;
 
     @CPF @NotNull
     private String cpf;
 
     @PastOrPresent @NotNull
-    private LocalDate dateOfBirthday;
+    private LocalDate dateOfBirth;
     @Transient @NotNull
-    private String cep;
+    private String zipCode;
     @Transient @NotNull
-    private Integer numberOfResidence;
+    private Integer houseNumber;
     @Transient
     private String complement;
     @OneToOne(cascade = CascadeType.ALL)
@@ -38,19 +36,19 @@ public class Clients  {
 
     public Clients(){}
 
-    public Clients(String nome, String cpf, LocalDate dateOfBirthday, String cep, Integer numberOfResidence, String complement) {
-        this.nome = nome;
+    public Clients(String name, String cpf, LocalDate dateOfBirth, String zipCode, Integer houseNumber, String complement) {
+        this.name = name;
         this.cpf = cpf;
-        this.dateOfBirthday = dateOfBirthday;
-        this.cep = cep;
-        this.numberOfResidence = numberOfResidence;
+        this.dateOfBirth = dateOfBirth;
+        this.zipCode = zipCode;
+        this.houseNumber = houseNumber;
         if((complement == null) || complement.equals("")){
             this.complement = null;
         }else {this.complement = complement;}
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     public void setAdress(Adress adress) {
@@ -61,13 +59,13 @@ public class Clients  {
         return idClient;
     }
     @Transient
-    public String getCep() {
-        return cep;
+    public String getZipCode() {
+        return zipCode;
     }
 
     @Transient
-    public Integer getNumberOfResidence() {
-        return numberOfResidence;
+    public Integer getHouseNumber() {
+        return houseNumber;
     }
     @Transient
     public String getComplement() {
@@ -78,19 +76,7 @@ public class Clients  {
         return cpf;
     }
 
-    public LocalDate getDateOfBirthday() {
-        return dateOfBirthday;
-    }
-
-    @Override
-    public String toString() {
-        return "Clients{" +
-                "nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", dateOfBirthday=" + dateOfBirthday +
-                ", cep='" + cep + '\'' +
-                ", numberOfResidence=" + numberOfResidence +
-                ", complement='" + complement + '\'' +
-                '}';
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 }

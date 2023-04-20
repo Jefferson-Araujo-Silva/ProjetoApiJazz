@@ -17,6 +17,10 @@ public class SearchClients {
         return clientRepository.findAll();
     }
 
+    public List<Object[]> findPessoaAndEnderecoById(Long idAdress){
+        return clientRepository.findPessoaAndEnderecoById();
+    }
+
     public Optional<Clients> findById(Long id){
         return clientRepository.findById(id);
     }

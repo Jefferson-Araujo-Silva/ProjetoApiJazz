@@ -8,12 +8,12 @@
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
-    <show-object-properties value="true" />
+    <show-object-properties value="false" />
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="c17c786d-0f6c-44cd-8870-ce7e3ba3700a">
-      <console name="Connection" type="STANDARD" schema="jazztech" session="Main"><![CDATA[select * from jazztech.client;]]></console>
+    <connection id="7a23ec8e-58c3-4e9b-b2cf-4ac1ce73d9bc">
+      <console name="Connection" type="STANDARD" schema="jazztech" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -44,7 +44,7 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="c17c786d-0f6c-44cd-8870-ce7e3ba3700a" active="true" signed="true">
+      <connection id="7a23ec8e-58c3-4e9b-b2cf-4ac1ce73d9bc" active="true" signed="true">
         <database>
           <name value="Connection" />
           <description value="" />

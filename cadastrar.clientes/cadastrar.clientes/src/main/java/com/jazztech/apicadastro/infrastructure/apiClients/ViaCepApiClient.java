@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ViaCepApiClient {
 
-    public Adress createAdress(Clients client){
-        Cep cep = ViaCepClient.findCep(client.getCep());
+    public Adress createAdress(String complement, String cep){
+            Cep cepUser = ViaCepClient.findCep(cep);
 
-        return new Adress(cep,client);
+        return new Adress(cepUser,complement);
     }
 }

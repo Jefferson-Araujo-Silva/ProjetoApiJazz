@@ -4,10 +4,9 @@ import com.jazztech.apicadastro.applicationservice.domain.entity.Adress;
 import com.jazztech.apicadastro.applicationservice.domain.entity.Clients;
 import com.jazztech.apicadastro.infrastructure.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
