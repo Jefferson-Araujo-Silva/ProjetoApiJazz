@@ -2,10 +2,11 @@ package com.jazztech.apicadastro.presentation.controller;
 
 import com.jazztech.apicadastro.applicationservice.clientsService.CreateClients;
 import com.jazztech.apicadastro.applicationservice.clientsService.SearchClients;
-import com.jazztech.apicadastro.applicationservice.domain.entity.Adress;
 import com.jazztech.apicadastro.applicationservice.domain.entity.Clients;
-import com.jazztech.apicadastro.presentation.dto.ClientDto;
+import com.jazztech.apicadastro.presentation.dto.CreateClientDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,11 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class ClientsController {
+    @Autowired
     private final CreateClients createClients;
+    @Autowired
     private final SearchClients searchClients;
-    private final ClientDto clientDto;
+
 
     @GetMapping("/returnClients")
     public List<Clients> getAllClients(){
@@ -35,8 +38,7 @@ public class ClientsController {
         return searchClients.findById(id);
     }
     @PostMapping("/registerClients")
-    public ResponseEntity<Clients> registerClient(@RequestBody Clients clients){
-        Adress adress = clientDto.createAdress(clients);
-        return new ResponseEntity<>(createClients.save(clients, adress), HttpStatus.CREATED);
+    public ResponseEntity<Clients> registerClient(@Valid @RequestBody CreateClientDto clients){
+        return new ResponseEntity<>(createClients.save(clients), HttpStatus.CREATED);
     }
 }

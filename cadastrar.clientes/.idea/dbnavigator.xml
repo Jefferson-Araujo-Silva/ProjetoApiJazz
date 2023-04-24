@@ -12,8 +12,8 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="7a23ec8e-58c3-4e9b-b2cf-4ac1ce73d9bc">
-      <console name="Connection" type="STANDARD" schema="jazztech" session="Main" />
+    <connection id="7498b293-d5ca-4e42-948a-41400564c635">
+      <console name="Connection" type="STANDARD" schema="mysql" session="Main"><![CDATA[select * from jazztech.client;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -44,7 +44,7 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="7a23ec8e-58c3-4e9b-b2cf-4ac1ce73d9bc" active="true" signed="true">
+      <connection id="7498b293-d5ca-4e42-948a-41400564c635" active="true" signed="true">
         <database>
           <name value="Connection" />
           <description value="" />
@@ -57,7 +57,7 @@
           <url-type value="DATABASE" />
           <host value="localhost" />
           <port value="3306" />
-          <database value="jazztech" />
+          <database value="mysql" />
           <type value="USER_PASSWORD" />
           <user value="root" />
           <deprecated-pwd value="cm9vdA==" />

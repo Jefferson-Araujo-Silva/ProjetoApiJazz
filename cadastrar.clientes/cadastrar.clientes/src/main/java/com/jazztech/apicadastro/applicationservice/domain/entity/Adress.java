@@ -1,6 +1,5 @@
 package com.jazztech.apicadastro.applicationservice.domain.entity;
 
-import com.gtbr.domain.Cep;
 import jakarta.persistence.*;
 import lombok.experimental.NonFinal;
 
@@ -21,12 +20,14 @@ public class Adress{
         private Clients clients;
 
         public Adress(){}
-    public Adress(Cep cep, String complement) {
-        this.neighborhood = cep.getBairro();
-        this.zipCode = cep.getCep();
-        this.city = cep.getLocalidade();
-        this.state = cep.getUf();
+
+    public Adress(String publicPlace, String neighborhood, String complement, String zipCode, String city, String state) {
+        this.publicPlace = publicPlace;
+        this.neighborhood = neighborhood;
         this.complement = complement;
-        this.publicPlace = cep.getLogradouro();
+        this.zipCode = zipCode;
+        this.city = city;
+        this.state = state;
     }
+
 }

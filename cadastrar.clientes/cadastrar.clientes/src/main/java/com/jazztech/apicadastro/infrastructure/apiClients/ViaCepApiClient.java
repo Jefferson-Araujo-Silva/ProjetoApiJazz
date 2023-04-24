@@ -1,17 +1,15 @@
 package com.jazztech.apicadastro.infrastructure.apiClients;
 
-import com.gtbr.ViaCepClient;
-import com.gtbr.domain.Cep;
 import com.jazztech.apicadastro.applicationservice.domain.entity.Adress;
-import com.jazztech.apicadastro.applicationservice.domain.entity.Clients;
+import com.jazztech.apicadastro.infrastructure.apiClients.dto.ClientDto;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
-@Component
-public class ViaCepApiClient {
+@FeignClient(name = "ViaCepApiClient", url = "https://viacep.com.br/ws/")
+public interface ViaCepApiClient {
 
-    public Adress createAdress(String complement, String cep){
-            Cep cepUser = ViaCepClient.findCep(cep);
-
-        return new Adress(cepUser,complement);
-    }
+    @GetMapping("{cep}/json/")
+    public ClientDto createAdress(@PathVariable String cep);
 }
