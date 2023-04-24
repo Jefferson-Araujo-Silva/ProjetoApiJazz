@@ -17,11 +17,11 @@ public class SearchClients {
         return clientRepository.findAll();
     }
 
-    public List<Object[]> findPessoaAndEnderecoById(Long idAdress){
+    public List<Object[]> findPessoaAndAdressById(Integer idAdress){
         return clientRepository.findPessoaAndEnderecoById();
     }
 
-    public Optional<Clients> findById(Long id){
+    public Optional<Clients> findById(Integer id){
         return clientRepository.findById(id);
     }
 }

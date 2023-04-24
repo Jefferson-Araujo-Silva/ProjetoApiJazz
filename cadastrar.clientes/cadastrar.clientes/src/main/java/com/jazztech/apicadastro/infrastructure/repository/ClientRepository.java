@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ClientRepository extends JpaRepository <Clients, Long> {
+public interface ClientRepository extends JpaRepository <Clients, Integer> {
     @Query("SELECT c, a FROM Clients c JOIN c.adress a")
     List<Object[]> findPessoaAndEnderecoById();
 }
