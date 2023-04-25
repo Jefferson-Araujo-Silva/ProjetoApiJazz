@@ -11,9 +11,5 @@ _cadastrar.clientes/src/main/java/com/jazztech/apicadastro/presentation/dto/Crea
 fcadastrar.clientes/src/main/java/com/jazztech/apicadastro/applicationservice/domain/entity/Adress.java,1\1\11d59839e9b1a5738417566c4cd24fb678bd3902
 ñ
 fcadastrar.clientes/src/main/java/com/jazztech/apicadastro/infrastructure/apiClients/dto/ClientDto.java,8\7\8724c75783a6a22e04e207e87c1b93415b01356c
-ê
-`cadastrar.clientes/src/main/java/com/jazztech/apicadastro/presentation/handler/ErrorHandler.java,e\e\eedf9071a71bda29954e3eb3516ddf1f7aa57184
-z
-Jcadastrar.clientes/src/main/java/com/jazztech/apicadastro/Application.java,f\f\ffe084f90e895b0b6d8c575e0b3fa4898ee694f2
-J
-cadastrar.clientes/pom.xml,0\4\04e531d2057cefcecb5e46197456cae0015be390
+û
+ncadastrar.clientes/src/main/java/com/jazztech/apicadastro/applicationservice/clientsService/CreateClients.java,0\c\0c952e9f2ad0e1f124b767c96404380e277f8eb5

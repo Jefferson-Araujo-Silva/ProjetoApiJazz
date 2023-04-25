@@ -1,0 +1,15 @@
+
+[
+java:S1128"9Remove this unused import 'lombok.experimental.NonFinal'.(áş…±øÿÿÿÿ8†ˆÒû0
+Q
+java:S1068"/Remove this unused "publicPlace" private field.(’¶¤úÿÿÿÿ8ßîÕøù0
+M
+java:S1068"0Remove this unused "neighborhood" private field.(­¢öˆ8ßîÕøù0
+P
+java:S1068".Remove this unused "complement" private field.(ú›—ùúÿÿÿÿ8ßîÕøù0
+H
+java:S1068"+Remove this unused "zipCode" private field.(ŞùÎå8ßîÕøù0
+E
+java:S1068"(Remove this unused "city" private field.(“øÌà8ßîÕøù0
+K
+java:S1068")Remove this unused "state" private field.(µîŠ©øÿÿÿÿ8ßîÕøù0

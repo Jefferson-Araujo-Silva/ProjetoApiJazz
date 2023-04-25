@@ -32,10 +32,10 @@ public class ClientsController {
     private final Logger LOOGER = LoggerFactory.getLogger(ClientsController.class);
 
 
-    @GetMapping
-    public List<Clients> getAllClients(){
+    @GetMapping("/client")
+    public ResponseEntity<List<Clients>> getAllClients(){
         LOOGER.info("Retornando clientes");
-        return searchClients.listAll();
+        return ResponseEntity.status(200).body(searchClients.listAll());
     }
 
     @GetMapping("adress/{idAdress}")
@@ -43,7 +43,7 @@ public class ClientsController {
         return searchClients.findPessoaAndAdressById(idAdress);
     }
     @GetMapping("/{id}")
-    public Optional<Clients> getClientsById(@PathVariable Integer id){
+    public Optional<Clients> getClientsById(@RequestParam Integer id){
         return searchClients.findById(id);
     }
     @PostMapping
