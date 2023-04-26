@@ -5,6 +5,8 @@ import com.jazztech.apicadastro.applicationservice.clientsService.DeleteClients;
 import com.jazztech.apicadastro.applicationservice.clientsService.SearchClients;
 import com.jazztech.apicadastro.applicationservice.domain.entity.Clients;
 import com.jazztech.apicadastro.presentation.dto.CreateClientDto;
+import com.jazztech.apicadastro.presentation.handler.ClientNotCreatedException;
+import com.jazztech.apicadastro.presentation.handler.ClientNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -43,11 +45,12 @@ public class ClientsController {
         return searchClients.findPessoaAndAdressById(idAdress);
     }
     @GetMapping("/{id}")
-    public Optional<Clients> getClientsById(@RequestParam Integer id){
+    public Clients getClientsById(@RequestParam Integer id) throws ClientNotFoundException {
         return searchClients.findById(id);
     }
     @PostMapping
-    public ResponseEntity<Clients> registerClient(@Valid @RequestBody CreateClientDto clients){
+    public ResponseEntity<Clients> registerClient
+            (@Valid @RequestBody CreateClientDto clients) throws ClientNotCreatedException {
         return new ResponseEntity<>(createClients.save(clients), HttpStatus.CREATED);
     }
 

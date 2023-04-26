@@ -6,6 +6,7 @@ import com.jazztech.apicadastro.infrastructure.apiClients.ViaCepApiClient;
 import com.jazztech.apicadastro.infrastructure.repository.ClientRepository;
 import com.jazztech.apicadastro.infrastructure.apiClients.dto.ClientDto;
 import com.jazztech.apicadastro.presentation.dto.CreateClientDto;
+import com.jazztech.apicadastro.presentation.handler.ClientNotCreatedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,12 @@ public class CreateClients {
     @Autowired
     private ViaCepApiClient viaCepApiClient;
 
-    public Clients save(CreateClientDto createClientDto) {
+    public Clients save(CreateClientDto createClientDto) throws ClientNotCreatedException {
+        if (clientRepository.countByCpfContains(createClientDto.cpf()) != 0) {
+            throw new ClientNotCreatedException(String.format("Não foi possível cadastrar, cliente já cadastrado",
+                    createClientDto.cpf()));
+        }
+
         ClientDto clientDtoAdress = viaCepApiClient.createAdress(createClientDto.zipCode());
 
         Adress adress = new Adress(clientDtoAdress.logradouro(), clientDtoAdress.bairro(),
