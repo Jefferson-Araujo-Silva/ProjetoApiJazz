@@ -1,11 +1,15 @@
 # Define a imagem base
-FROM openjdk:17-jre-slim
-
-# Define o diretório de trabalho
-WORKDIR /app
+FROM openjdk:17
+EXPOSE 8080
+LABEL maintainer="spring-boot-docker.jar"
+# Configurações do MySQL
+ENV MYSQL_HOST mysql
+ENV MYSQL_PORT 3306
+ENV MYSQL_DATABASE jazztech
+ENV MYSQL_PASSWORD root
 
 # Copia os arquivos necessários para o container
-COPY target/myproject.jar /app
+ADD target/spring-boot-docker.jar spring-boot-docker.jar
 
 # Define o comando de execução
-CMD ["java", "-jar", "myproject.jar"]
+ENTRYPOINT ["java", "-jar", "/spring-boot-docker.jar"]
