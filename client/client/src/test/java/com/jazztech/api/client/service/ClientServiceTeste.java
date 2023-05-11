@@ -100,39 +100,39 @@ class ClientServiceTeste {
 
     public static ClientRequest clientRequestFactory() {
         return ClientRequest.builder()
-                .cpf("60279437005")
-                .name("Elin Williams")
+                .cpf("53887957806")
+                .name("Jeff tester")
                 .dateOfBirth(LocalDate.now().minusYears(20))
                 .address(ClientRequest.AddressRequest.builder()
-                        .numberOfHouse(101)
-                        .cep("01001-000")
-                        .complement("complement")
+                        .numberOfHouse(11)
+                        .cep("084660-010")
+                        .complement("n/a")
                         .build())
                 .build();
     }
 
     public static AddressViaCep addressViaCepFactory() {
         return AddressViaCep.builder()
-                .cep("01001-000")
-                .logradouro("Praça da Sé")
-                .complemento("lado ímpar")
-                .bairro("Sé")
+                .cep("08466-010")
+                .logradouro("Rua Raul Seixas")
+                .complemento("n/a")
+                .bairro("Guaianases")
                 .uf("SP")
                 .build();
     }
 
     public static ClientEntity clientEntityFactory() {
         return ClientEntity.builder()
-                .name("Elin Williams")
-                .cpf("60279437005")
+                .name("Jeff tester")
+                .cpf("53887957806")
                 .dateOfBirth(LocalDate.now().minusYears(20))
                 .address(AddressEntity.builder()
                         .state("SP")
-                        .cep("01001-000")
-                        .neighborhood("Sé")
-                        .complement("complement")
-                        .street("Praça da Sé")
-                        .uf("São Paulo")
+                        .cep("08466-010")
+                        .neighborhood("Guaianases")
+                        .complement("n/a")
+                        .street("Rua Raul Seicas")
+                        .uf("SP")
                         .build())
                 .build();
     }
