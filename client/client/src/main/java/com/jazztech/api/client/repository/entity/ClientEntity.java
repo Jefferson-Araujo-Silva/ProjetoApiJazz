@@ -28,7 +28,7 @@ public class ClientEntity {
     }
 
 
-    @Builder
+    @Builder(toBuilder = true)
     public ClientEntity(String name, String cpf, LocalDate dateOfBirth, AddressEntity address) {
         this.id = UUID.randomUUID();
         this.name = name;

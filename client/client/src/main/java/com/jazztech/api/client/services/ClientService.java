@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -47,8 +48,13 @@ public class ClientService {
     }
 
     public ClientResponse getClientBy(UUID id) {
-        final ClientEntity clientEntity = clientRepository.findById(id)
-                .orElseThrow(() -> new ClientNotFoundException("Client not found by id %s".formatted(id)));
+        ClientEntity clientEntity;
+        try {
+            final Optional<ClientEntity> clientEntityOptional = clientRepository.findById(id);
+            clientEntity = clientEntityOptional.get();
+        }catch(ClientNotFoundException e){
+            throw new ClientNotFoundException("Client not found by id %s".formatted(id));
+        }
         return clientResponseMapper.from(clientEntity);
     }
 

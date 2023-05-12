@@ -4,6 +4,7 @@ import com.jazztech.api.client.apiclient.ViaCepApiClient;
 import com.jazztech.api.client.apiclient.addressdto.AddressViaCep;
 import com.jazztech.api.client.controller.request.ClientRequest;
 import com.jazztech.api.client.controller.response.ClientResponse;
+import com.jazztech.api.client.exception.ClientNotFoundException;
 import com.jazztech.api.client.mapper.*;
 import com.jazztech.api.client.repository.ClientRepository;
 import com.jazztech.api.client.repository.entity.AddressEntity;
@@ -17,11 +18,14 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -99,6 +103,17 @@ class ClientServiceTest {
         assertEquals(clientRequest.getAddress().getComplement(), clientResponse.address().complement());
     }
 
+    @Test
+    void should_throw_client_not_found_exception() {
+        ArgumentCaptor<UUID> idrgumentCaptor = ArgumentCaptor.forClass(UUID.class);
+        Optional<ClientEntity> clientEntity = null;
+        when(clientRepository.findById(idrgumentCaptor.capture())).thenThrow(ClientNotFoundException.class);
+
+        UUID idRequest = UUID.randomUUID();
+        ClientNotFoundException clientNotFoundException = assertThrows(ClientNotFoundException.class,
+                ()-> clientService.getClientBy(idRequest));
+        assertEquals(String.format("Client not found by id %s", idRequest), clientNotFoundException.getMessage());
+    }
     @Test
     void should_return_address(){
         final AddressViaCep addressRequest = addressViaCepFactory();
