@@ -43,18 +43,19 @@ public class ClientService {
     }
 
     public AddressViaCep getAddressViaCep(String cep) {
-        final AddressViaCep addressViaCep = viaCepApiClient.getAddress(cep);
-        return addressViaCep;
+        return viaCepApiClient.getAddress(cep);
     }
 
     public ClientResponse getClientBy(UUID id) {
         ClientEntity clientEntity;
+        final Optional<ClientEntity> clientEntityOptional;
         try {
-            final Optional<ClientEntity> clientEntityOptional = clientRepository.findById(id);
+            clientEntityOptional = clientRepository.findById(id);
             clientEntity = clientEntityOptional.get();
-        }catch(ClientNotFoundException e){
+        }catch (NoSuchMethodException e){
             throw new ClientNotFoundException("Client not found by id %s".formatted(id));
         }
+        clientEntity = clientEntityOptional.get();
         return clientResponseMapper.from(clientEntity);
     }
 
