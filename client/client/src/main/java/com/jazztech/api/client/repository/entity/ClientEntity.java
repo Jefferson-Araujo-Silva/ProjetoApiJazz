@@ -23,13 +23,6 @@ public class ClientEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     AddressEntity address;
-    @CreationTimestamp
-    @Column(name = "createdAt")
-    LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updatedAt")
-    LocalDateTime updatedAt;
 
     private ClientEntity() {
     }

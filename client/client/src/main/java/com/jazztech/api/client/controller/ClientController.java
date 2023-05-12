@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,8 +25,13 @@ public class ClientController {
     public List<ClientEntity> searchClients(){
         return clientService.getClients();
     }
-    @GetMapping(path = "/{cpf}")
-    public ClientResponse searchClientsBy(@RequestParam String cpf){
+    @GetMapping(path = "/search-by-cpf/{cpf}")
+    public ClientResponse searchClientsByCpf(@RequestParam String cpf){
         return clientService.getClientBy(cpf);
+    }
+    @GetMapping(path = "/search-by-id/{id}")
+    public ClientResponse searchClientsById(@RequestParam String id){
+        UUID idResponse = UUID.fromString(id);
+        return clientService.getClientBy(idResponse);
     }
 }

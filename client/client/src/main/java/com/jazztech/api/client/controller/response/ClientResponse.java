@@ -1,6 +1,8 @@
 package com.jazztech.api.client.controller.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -11,10 +13,11 @@ public record ClientResponse(
         String name,
         String cpf,
         LocalDate dateOfBirth,
-        AddressResponse address,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        AddressResponse address
 ) {
+    @Builder
+    public ClientResponse {
+    }
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record AddressResponse(
             UUID id,
@@ -27,5 +30,7 @@ public record ClientResponse(
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
+        @Builder
+        public AddressResponse{}
     }
 }

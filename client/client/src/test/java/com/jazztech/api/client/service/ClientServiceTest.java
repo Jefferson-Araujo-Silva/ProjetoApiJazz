@@ -5,8 +5,6 @@ import com.jazztech.api.client.apiclient.addressdto.AddressViaCep;
 import com.jazztech.api.client.controller.request.ClientRequest;
 import com.jazztech.api.client.controller.response.ClientResponse;
 import com.jazztech.api.client.mapper.*;
-import com.jazztech.api.client.model.Address;
-import com.jazztech.api.client.model.Client;
 import com.jazztech.api.client.repository.ClientRepository;
 import com.jazztech.api.client.repository.entity.AddressEntity;
 import com.jazztech.api.client.repository.entity.ClientEntity;
@@ -19,7 +17,8 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class ClientServiceTeste {
+class ClientServiceTest {
     @Mock
     private ViaCepApiClient viaCepApiClient;
     @Mock
@@ -74,17 +73,32 @@ class ClientServiceTeste {
     // TODO fazer os testes para o caso de uso de consulta
     @Test
     void should_return_client_where_cpf_is_6027943005(){
-
-        ArgumentCaptor<String> cpfArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        when(clientRepository.findByCpf(cpfArgumentCaptor.capture())).thenReturn(clientEntityFactory());
+        ArgumentCaptor<String> cpfArgumentCapor = ArgumentCaptor.forClass(String.class);
+        when(clientRepository.findByCpf(cpfArgumentCapor.capture())).thenReturn(clientEntityFactory());
 
         final ClientRequest clientRequest = clientRequestFactory();
-        final ClientEntity clientResponse = clientRepository.findByCpf("53887957806");
-        assertEquals(clientRequest.cpf(), clientResponse.getCpf());
-        assertEquals(clientRequest.name(), clientResponse.getName());
-        assertEquals(clientRequest.address().cep(), clientResponse.getAddress().getCep());
-        assertEquals(clientRequest.address().complement(), clientResponse.getAddress().getComplement());
+        final ClientResponse clientResponse = clientService.getClientBy("53887957806");
+        assertEquals(clientRequest.cpf(), clientResponse.cpf());
+        assertEquals(clientRequest.name(), clientResponse.name());
+        assertEquals(clientRequest.address().cep(), clientResponse.address().cep());
+        assertEquals(clientRequest.address().complement(), clientResponse.address().complement());
     }
+    @Test
+    void should_return_client_where_id_is_idClientEntity(){
+        ArgumentCaptor<UUID> idrgumentCaptor = ArgumentCaptor.forClass(UUID.class);
+        when(clientRepository.findById(idrgumentCaptor.capture())).thenReturn(Optional.ofNullable(clientEntityFactory()));
+
+
+        final ClientEntity clientRequest = clientEntityFactory();
+        UUID idRequest = clientRequest.getId();
+        final ClientResponse clientResponse = clientService.getClientBy(idRequest);
+
+        assertEquals(clientRequest.getCpf(), clientResponse.cpf());
+        assertEquals(clientRequest.getName(), clientResponse.name());
+        assertEquals(clientRequest.getAddress().getCep(), clientResponse.address().cep());
+        assertEquals(clientRequest.getAddress().getComplement(), clientResponse.address().complement());
+    }
+
     @Test
     void should_return_address(){
         final AddressViaCep addressRequest = addressViaCepFactory();
@@ -97,7 +111,19 @@ class ClientServiceTeste {
         assertEquals(addressRequest.uf(), addressResponse.uf());
         assertEquals(addressRequest.logradouro(), addressResponse.logradouro());
     }
-
+    public static ClientResponse clientResponseFactory() {
+        return ClientResponse.builder()
+                .id(UUID.randomUUID())
+                .cpf("53887957806")
+                .name("Jeff tester")
+                .dateOfBirth(LocalDate.now().minusYears(20))
+                .address(ClientResponse.AddressResponse.builder()
+                        .numberOfHouse(11)
+                        .cep("08466-010")
+                        .complement("n/a")
+                        .build())
+                .build();
+    }
     public static ClientRequest clientRequestFactory() {
         return ClientRequest.builder()
                 .cpf("53887957806")
@@ -105,7 +131,7 @@ class ClientServiceTeste {
                 .dateOfBirth(LocalDate.now().minusYears(20))
                 .address(ClientRequest.AddressRequest.builder()
                         .numberOfHouse(11)
-                        .cep("084660-010")
+                        .cep("08466-010")
                         .complement("n/a")
                         .build())
                 .build();

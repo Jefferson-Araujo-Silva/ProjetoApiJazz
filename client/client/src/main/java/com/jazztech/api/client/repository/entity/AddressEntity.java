@@ -25,13 +25,6 @@ public class AddressEntity {
     String state;
     String uf;
     Integer numberOfHouse;
-    @CreationTimestamp
-    @Column(name = "created_at")
-    LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    LocalDateTime updatedAt;
 
     private AddressEntity() {
     }
