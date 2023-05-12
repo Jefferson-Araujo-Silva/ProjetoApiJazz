@@ -4,6 +4,8 @@ import com.jazztech.api.client.apiclient.ViaCepApiClient;
 import com.jazztech.api.client.apiclient.addressdto.AddressViaCep;
 import com.jazztech.api.client.controller.request.ClientRequest;
 import com.jazztech.api.client.controller.response.ClientResponse;
+import com.jazztech.api.client.exception.AddressNotFoundException;
+import com.jazztech.api.client.exception.CPFAlreadyExistException;
 import com.jazztech.api.client.exception.ClientNotFoundException;
 import com.jazztech.api.client.mapper.ClientEntityMapper;
 import com.jazztech.api.client.mapper.ClientMapper;
@@ -12,6 +14,7 @@ import com.jazztech.api.client.model.Client;
 import com.jazztech.api.client.repository.ClientRepository;
 import com.jazztech.api.client.repository.entity.ClientEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,11 +41,19 @@ public class ClientService {
 
     private ClientEntity saveClient(ClientEntity clientEntity) {
         final ClientEntity clientSaved;
-        clientSaved = clientRepository.save(clientEntity);
+        try {
+            clientSaved = clientRepository.save(clientEntity);
+        }catch (DataIntegrityViolationException e){
+            throw new CPFAlreadyExistException("Cpf %s already exists in database".formatted(clientEntity.getCpf()));
+        }
         return clientSaved;
     }
 
     public AddressViaCep getAddressViaCep(String cep) {
+        final AddressViaCep addressViaCep = viaCepApiClient.getAddress(cep);
+        if (addressViaCep.cep() == null) {
+            throw new AddressNotFoundException("Address not exist to cep %s".formatted(cep));
+        }
         return viaCepApiClient.getAddress(cep);
     }
 
@@ -51,8 +62,7 @@ public class ClientService {
         final Optional<ClientEntity> clientEntityOptional;
         try {
             clientEntityOptional = clientRepository.findById(id);
-            clientEntity = clientEntityOptional.get();
-        }catch (NoSuchMethodException e){
+        }catch (ClientNotFoundException e){
             throw new ClientNotFoundException("Client not found by id %s".formatted(id));
         }
         clientEntity = clientEntityOptional.get();

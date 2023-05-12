@@ -4,6 +4,7 @@ import com.jazztech.api.client.apiclient.ViaCepApiClient;
 import com.jazztech.api.client.apiclient.addressdto.AddressViaCep;
 import com.jazztech.api.client.controller.request.ClientRequest;
 import com.jazztech.api.client.controller.response.ClientResponse;
+import com.jazztech.api.client.exception.CPFAlreadyExistException;
 import com.jazztech.api.client.exception.ClientNotFoundException;
 import com.jazztech.api.client.mapper.*;
 import com.jazztech.api.client.repository.ClientRepository;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -101,6 +103,17 @@ class ClientServiceTest {
         assertEquals(clientRequest.getName(), clientResponse.name());
         assertEquals(clientRequest.getAddress().getCep(), clientResponse.address().cep());
         assertEquals(clientRequest.getAddress().getComplement(), clientResponse.address().complement());
+    }
+    @Test
+    void should_throw_cpf_not_found_exception_when_cpf_already_registered(){
+        final AddressViaCep addressViaCep = addressViaCepFactory();
+        when(viaCepApiClient.getAddress(cepArgumentCaptor.capture())).thenReturn(addressViaCep);
+        when(clientRepository.save(clientEntityArgumentCaptor.capture())).thenThrow(DataIntegrityViolationException.class);
+
+        final ClientRequest clientRequest = clientRequestFactory();
+        CPFAlreadyExistException cpfAlreadyExistException = assertThrows(CPFAlreadyExistException.class,
+                ()-> clientService.create(clientRequest));
+        assertEquals("Cpf 53887957806 already exists in database", cpfAlreadyExistException.getMessage());
     }
 
     @Test
