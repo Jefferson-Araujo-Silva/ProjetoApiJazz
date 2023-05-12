@@ -54,7 +54,7 @@ public class ClientService {
         if (addressViaCep.cep() == null) {
             throw new AddressNotFoundException("Address not exist to cep %s".formatted(cep));
         }
-        return viaCepApiClient.getAddress(cep);
+        return addressViaCep;
     }
 
     public ClientResponse getClientBy(UUID id) {

@@ -4,6 +4,7 @@ import com.jazztech.api.client.apiclient.ViaCepApiClient;
 import com.jazztech.api.client.apiclient.addressdto.AddressViaCep;
 import com.jazztech.api.client.controller.request.ClientRequest;
 import com.jazztech.api.client.controller.response.ClientResponse;
+import com.jazztech.api.client.exception.AddressNotFoundException;
 import com.jazztech.api.client.exception.CPFAlreadyExistException;
 import com.jazztech.api.client.exception.ClientNotFoundException;
 import com.jazztech.api.client.mapper.*;
@@ -130,7 +131,7 @@ class ClientServiceTest {
     @Test
     void should_return_address(){
         final AddressViaCep addressRequest = addressViaCepFactory();
-        when(clientService.getAddressViaCep(cepArgumentCaptor.capture())).thenReturn(addressRequest);
+        when(viaCepApiClient.getAddress(cepArgumentCaptor.capture())).thenReturn(addressRequest);
 
         final AddressViaCep addressResponse = clientService.getAddressViaCep("01001-000");
 
@@ -138,6 +139,16 @@ class ClientServiceTest {
         assertEquals(addressRequest.cep(), addressResponse.cep());
         assertEquals(addressRequest.uf(), addressResponse.uf());
         assertEquals(addressRequest.logradouro(), addressResponse.logradouro());
+    }
+    @Test
+    void should_throw_address_not_found_exception_where_cep_is_null(){
+        final AddressViaCep addressRequest = addressViaCepFactory().toBuilder().cep(null).build();
+        when(viaCepApiClient.getAddress(cepArgumentCaptor.capture())).thenReturn(addressRequest);
+
+        ClientRequest clientRequest = clientRequestFactory();
+        final AddressNotFoundException addressNotFoundException = assertThrows(AddressNotFoundException.class,
+                ()-> clientService.create(clientRequest));
+        assertEquals("Address not exist to cep 08466-010", addressNotFoundException.getMessage());
     }
     public static ClientResponse clientResponseFactory() {
         return ClientResponse.builder()
