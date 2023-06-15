@@ -13,13 +13,13 @@ import com.jazztech.api.client.mapper.ClientResponseMapper;
 import com.jazztech.api.client.model.Client;
 import com.jazztech.api.client.repository.ClientRepository;
 import com.jazztech.api.client.repository.entity.ClientEntity;
-import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +29,7 @@ public class ClientService {
     private final ClientResponseMapper clientResponseMapper;
     private final ClientMapper clientMapper;
     private final ClientRepository clientRepository;
+
     public ClientResponse create(ClientRequest clientRequest) {
         final Client client = clientMapper.from(clientRequest);
         final String cep = client.address().cep();
@@ -43,7 +44,7 @@ public class ClientService {
         final ClientEntity clientSaved;
         try {
             clientSaved = clientRepository.save(clientEntity);
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new CPFAlreadyExistException("Cpf %s already exists in database".formatted(clientEntity.getCpf()));
         }
         return clientSaved;
@@ -69,10 +70,22 @@ public class ClientService {
         return clientResponseMapper.from(clientEntity);
     }
 
-    public ClientResponse getClientBy(String cpf) {
-        final ClientEntity clientEntity = clientRepository.findByCpf(cpf);
-        return clientResponseMapper.from(clientEntity);
+    public List<ClientResponse> getClientBy(String cpf) {
+        final List<ClientEntity> clients;
+        if(cpf != null){
+            clients = clientRepository.findByCpf(cpf);
+        }
+        else {
+            clients = clientRepository.findAll();
+        }
+        if (clients.isEmpty()) {
+           ClientNotFoundException clientNotFoundException = new ClientNotFoundException("Client no found by cpf %s".formatted(cpf));
+            clientNotFoundException.printStackTrace();
+            throw clientNotFoundException;
+        }
+        return clients.stream().map(clientResponseMapper::from).collect(Collectors.toList());
     }
+
     public List<ClientEntity> getClients() {
         return clientRepository.findAll();
 

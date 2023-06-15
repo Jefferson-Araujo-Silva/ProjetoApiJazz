@@ -6,6 +6,7 @@ import com.jazztech.api.client.repository.entity.ClientEntity;
 import com.jazztech.api.client.services.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,19 +19,16 @@ public class ClientController {
     @Autowired
     private final ClientService clientService;
     @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
     public ClientResponse createClient(@RequestBody ClientRequest clientRequest){
         return clientService.create(clientRequest);
     }
     @GetMapping
-    public List<ClientEntity> searchClients(){
-        return clientService.getClients();
-    }
-    @GetMapping(path = "/search-by-cpf/{cpf}")
-    public ClientResponse searchClientsByCpf(@RequestParam String cpf){
+    public List<ClientResponse> getClientBy(@RequestParam(value = "cpf" , required = false) String cpf){
         return clientService.getClientBy(cpf);
     }
-    @GetMapping(path = "/search-by-id/{id}")
-    public ClientResponse searchClientsById(@RequestParam String id){
+    @GetMapping(path = "/{id}")
+    public ClientResponse getClient(@PathVariable(value = "id") String id){
         UUID idResponse = UUID.fromString(id);
         return clientService.getClientBy(idResponse);
     }

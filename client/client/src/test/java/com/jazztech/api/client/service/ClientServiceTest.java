@@ -12,6 +12,7 @@ import com.jazztech.api.client.repository.ClientRepository;
 import com.jazztech.api.client.repository.entity.AddressEntity;
 import com.jazztech.api.client.repository.entity.ClientEntity;
 import com.jazztech.api.client.services.ClientService;
+import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -21,14 +22,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -81,10 +79,11 @@ class ClientServiceTest {
     @Test
     void should_return_client_where_cpf_is_6027943005(){
         ArgumentCaptor<String> cpfArgumentCapor = ArgumentCaptor.forClass(String.class);
-        when(clientRepository.findByCpf(cpfArgumentCapor.capture())).thenReturn(clientEntityFactory());
+        when(clientRepository.findByCpf(cpfArgumentCapor.capture())).thenReturn(List.of(clientEntityFactory()));
 
         final ClientRequest clientRequest = clientRequestFactory();
-        final ClientResponse clientResponse = clientService.getClientBy("53887957806");
+        final List<ClientResponse> clients = clientService.getClientBy("53887957806");
+        ClientResponse clientResponse = clients.get(0);
         assertEquals(clientRequest.cpf(), clientResponse.cpf());
         assertEquals(clientRequest.name(), clientResponse.name());
         assertEquals(clientRequest.address().cep(), clientResponse.address().cep());
@@ -196,7 +195,7 @@ class ClientServiceTest {
                         .cep("08466-010")
                         .neighborhood("Guaianases")
                         .complement("n/a")
-                        .street("Rua Raul Seicas")
+                        .street("Rua Raul Seixas")
                         .uf("SP")
                         .build())
                 .build();

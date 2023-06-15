@@ -3,15 +3,12 @@ package com.jazztech.api.client.mapper;
 import com.jazztech.api.client.controller.response.ClientResponse;
 import com.jazztech.api.client.repository.entity.AddressEntity;
 import com.jazztech.api.client.repository.entity.ClientEntity;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-12T09:38:33-0300",
+    date = "2023-05-18T09:57:04-0300",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
 )
 @Component
@@ -23,21 +20,15 @@ public class ClientResponseMapperImpl implements ClientResponseMapper {
             return null;
         }
 
-        UUID id = null;
-        String name = null;
-        String cpf = null;
-        LocalDate dateOfBirth = null;
-        ClientResponse.AddressResponse address = null;
+        ClientResponse.ClientResponseBuilder clientResponse = ClientResponse.builder();
 
-        id = client.getId();
-        name = client.getName();
-        cpf = client.getCpf();
-        dateOfBirth = client.getDateOfBirth();
-        address = from( client.getAddress() );
+        clientResponse.id( client.getId() );
+        clientResponse.name( client.getName() );
+        clientResponse.cpf( client.getCpf() );
+        clientResponse.dateOfBirth( client.getDateOfBirth() );
+        clientResponse.address( from( client.getAddress() ) );
 
-        ClientResponse clientResponse = new ClientResponse( id, name, cpf, dateOfBirth, address );
-
-        return clientResponse;
+        return clientResponse.build();
     }
 
     @Override
@@ -46,27 +37,16 @@ public class ClientResponseMapperImpl implements ClientResponseMapper {
             return null;
         }
 
-        UUID id = null;
-        String street = null;
-        String neighborhood = null;
-        String state = null;
-        Integer numberOfHouse = null;
-        String complement = null;
-        String cep = null;
+        ClientResponse.AddressResponse.AddressResponseBuilder addressResponse = ClientResponse.AddressResponse.builder();
 
-        id = address.getId();
-        street = address.getStreet();
-        neighborhood = address.getNeighborhood();
-        state = address.getState();
-        numberOfHouse = address.getNumberOfHouse();
-        complement = address.getComplement();
-        cep = address.getCep();
+        addressResponse.id( address.getId() );
+        addressResponse.street( address.getStreet() );
+        addressResponse.neighborhood( address.getNeighborhood() );
+        addressResponse.state( address.getState() );
+        addressResponse.numberOfHouse( address.getNumberOfHouse() );
+        addressResponse.complement( address.getComplement() );
+        addressResponse.cep( address.getCep() );
 
-        LocalDateTime createdAt = null;
-        LocalDateTime updatedAt = null;
-
-        ClientResponse.AddressResponse addressResponse = new ClientResponse.AddressResponse( id, street, neighborhood, state, numberOfHouse, complement, cep, createdAt, updatedAt );
-
-        return addressResponse;
+        return addressResponse.build();
     }
 }
